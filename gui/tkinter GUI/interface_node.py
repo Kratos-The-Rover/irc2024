@@ -1,6 +1,6 @@
 import rospy
 import time
-from std_msgs.msg import Int16MultiArray
+from std_msgs.msg import Float32MultiArray
 from  gui_stuff.msg import *
 
 def sub_call(data):
@@ -21,5 +21,5 @@ rospy.init_node("Gui_interface_node", anonymous=True)
 pub = rospy.Publisher("/spectrometer", spectro_msg, queue_size=10)
 rate = rospy.Rate(10)
 
-sub = rospy.Subscriber("/topic", Int16MultiArray, sub_call)
+sub = rospy.Subscriber("/topic", Float32MultiArray, sub_call)
 rospy.spin()

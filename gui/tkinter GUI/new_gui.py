@@ -33,9 +33,10 @@ co_y = []
 
 # spectro_time = datetime.now()
 
-spectro_x = []
-brad_y = []
-chloro_y = []
+spectro_pointer = 0
+spectro_x = [i for i in range(1, 19)]
+brad_y = [0 for i in range(18)]
+chloro_y = [0 for i in range(18)]
 
 
 # backend functions
@@ -48,14 +49,16 @@ def sensor_callback(data):
     sensor_plot()
 
 def spectro_callback(data):
+    global spectro_pointer
     global brad_y, chloro_y
     if data.brad!=-1:
-        brad_y.append(data.brad)
-        chloro_y.append(data.chloro)
+        # brad_y.append(data.brad)
+        # chloro_y.append(data.chloro)
+        brad_y[spectro_pointer] = data.brad
+        chloro_y[spectro_pointer] = data.chloro
+        spectro_pointer+= 1
     else:
-        print(data.brad)
-        global spectro_x
-        spectro_x = [1, 2, 3, 4, 5]
+        spectro_pointer = 0
         spectro_plot()
 
 def ml_callback(data):
@@ -143,7 +146,7 @@ def spectro_rec_plot():
     
     ax4.clear()
     ax5.clear()
-    print(spectro_x, brad_y, chloro_y)
+    # print(spectro_x, brad_y, chloro_y)
     ax4.plot(spectro_x, brad_y, 'b^-')
     ax4.set_title('Bradford assay')
     ax4.set_xlabel('wavelength')
@@ -166,12 +169,10 @@ def spectro_plot():
     
     spectro_rec_plot()
     
-    print(brad_y, chloro_y)
-    
     canvas_spectro.draw_idle()
     
-    brad_y.clear()
-    chloro_y.clear()
+    # brad_y.clear()
+    # chloro_y.clear()
 
 # save buttons
 def sensor_save():
@@ -198,16 +199,16 @@ def spectro_save():
     file_path = filedialog.asksaveasfilename()
     if file_path:
         with open(file_path, mode='w', newline='') as csv_file:
-            data = [brad_y, chloro_y]
-            
+            print(brad_y, len(brad_y))
+            print(chloro_y, len(chloro_y))
             writer = csv.writer(csv_file)
             writer.writerow(spectro_x)
             writer.writerow(brad_y)
             writer.writerow(chloro_y)
             
-    spectro_x.clear()
-    brad_y.clear()
-    chloro_y.clear()
+    # spectro_x.clear()
+    # brad_y.clear()
+    # chloro_y.clear()
     
     spectro_rec_plot()
     canvas_spectro.draw_idle()
