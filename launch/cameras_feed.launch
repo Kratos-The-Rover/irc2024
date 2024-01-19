@@ -1,0 +1,17 @@
+<launch>
+    <node name="image_view1" pkg="image_view" type="image_view" output="screen">
+        <remap from="image" to="/video_frame1/image"/>
+        <param name="image_transport" type="string" value="theora"/>
+        <param name="window_name" type="string" value="Camfeed 1"/>
+    </node>
+    <node name="image_view2" pkg="image_view" type="image_view" output="screen">
+        <remap from="image" to="/video_frame2/image"/>
+        <param name="image_transport" type="string" value="theora"/>
+        <param name="window_name" type="string" value="Camfeed 2"/>
+    </node>
+    <node name="image_view3" pkg="image_view" type="image_view" output="screen">
+        <remap from="image" to="/video_frame3/image"/>
+        <param name="image_transport" type="string" value="theora"/>
+        <param name="window_name" type="string" value="Camfeed 3"/>
+    </node>
+</launch>
