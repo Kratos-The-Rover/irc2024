@@ -62,6 +62,7 @@ add_message_files(
   FILES
   sensor_msg.msg
   spectro_msg.msg
+  atmos_msg.msg
  )
 
 ## Generate services in the 'srv' folder
