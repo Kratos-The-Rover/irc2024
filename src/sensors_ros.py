@@ -1,8 +1,7 @@
 import rospy
-from std_msgs.msg import Int16MultiArray
-
-import sensor_msg
-import atmos_msg
+from std_msgs.msg import _Int16MultiArray
+from irc2024.msg import sensor_msg
+from irc2024.msg import atmos_msg
 
 
 def ld_sensor_callback(data):

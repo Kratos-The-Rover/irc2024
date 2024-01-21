@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   message_generation
+  
 )
 
 ## System dependencies are found with CMake's conventions
@@ -166,10 +167,7 @@ include_directories(
   target_link_libraries(videofeed3 ${OpenCV_LIBRARIES})
   add_executable(base_control src/base_control.cpp)
   target_link_libraries(base_control ${catkin_LIBRARIES})
-  add_executable(lduno src/lduno.cpp)
-  target_link_libraries(lduno ${catkin_LIBRARIES})
-  add_executable(ldmega src/ldmega.cpp)
-  target_link_libraries(ldmega ${catkin_LIBRARIES})
+  
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
