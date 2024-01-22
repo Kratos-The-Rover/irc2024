@@ -1,5 +1,5 @@
 import rospy
-from std_msgs.msg import _Int16MultiArray
+from std_msgs.msg import Int16MultiArray
 from irc2024.msg import sensor_msg
 from irc2024.msg import atmos_msg
 
@@ -10,8 +10,11 @@ def ld_sensor_callback(data):
     ch4_values = data.data[1]
     co2_values = data.data[2]
     temp = data.data[3]
+    temp/=100
     humid = data.data[4]
+    humid/=100
     air_pressure = data.data[5]
+    air_pressure = (air_pressure*0.0009869233)/10 # convert from hpa to atm
 
     # Create sensor_msg message
     sensor_data = sensor_msg()
