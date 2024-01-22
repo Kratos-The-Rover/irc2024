@@ -1,0 +1,39 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/shiven/drone_ws/devel/include/**",
+        "/home/shiven/kratos2/devel/include/**",
+        "/home/shiven/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/shiven/drone_ws/src/async_web_server_cpp/include/**",
+        "/home/shiven/drone_ws/src/iq_gnc/include/**",
+        "/home/shiven/kratos2/src/irc2024/include/**",
+        "/home/shiven/kratos2/src/learning_joy/include/**",
+        "/home/shiven/drone_ws/src/mavros/libmavconn/include/**",
+        "/home/shiven/drone_ws/src/mavros/mavros/include/**",
+        "/home/shiven/drone_ws/src/mavros/mavros_msgs/include/**",
+        "/home/shiven/catkin_ws/src/px4_teleop/include/**",
+        "/home/shiven/kratos2/src/rosserial/rosserial_server/include/**",
+        "/home/shiven/kratos2/src/rosserial/rosserial_test/include/**",
+        "/home/shiven/drone_ws/src/mavros/test_mavros/include/**",
+        "/home/shiven/kratos2/src/turtlebot3_simulations/turtlebot3_fake/include/**",
+        "/home/shiven/kratos2/src/turtlebot3_simulations/turtlebot3_gazebo/include/**",
+        "/home/shiven/kratos2/src/turtlebot3/turtlebot3_slam/include/**",
+        "/home/shiven/kratos_urc22/src/urc2022/include/**",
+        "/home/shiven/drone_ws/src/web_video_server/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

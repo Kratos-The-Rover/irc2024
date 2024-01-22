@@ -37,7 +37,7 @@ if __name__ == '__main__':
     atmos_pub = rospy.Publisher('atmos_topic', atmos_msg, queue_size=10)
 
     # Subscribe to ld_sensor_data topic
-    rospy.Subscriber('ld_sensor_data', Int16MultiArray, ld_sensor_callback)
+    rospy.Subscriber('ld_sensor_data', _Int16MultiArray, ld_sensor_callback)
 
     # Spin ROS
     rospy.spin()
