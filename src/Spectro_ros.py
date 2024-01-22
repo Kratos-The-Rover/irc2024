@@ -1,19 +1,20 @@
 import serial
 import time
 import rospy
+from irc2024.msg import spectro_msg
 from std_msgs.msg import Float32MultiArray, MultiArrayLayout, MultiArrayDimension
 
 # Define the serial port and baud rate
 ser = serial.Serial('/dev/ttyUSB0', 115200)  # Update the port accordingly
 
 # Create the publisher and initialize the node outside the loop
-pub = rospy.Publisher('/topic', Float32MultiArray, queue_size=10)
+pub = rospy.Publisher('/spectrometer', spectro_msg, queue_size=10)
 rospy.init_node('talker', anonymous=True)
+rate = rospy.Rate(10)
 
 try:
     while not rospy.is_shutdown():
         data = ser.readline().decode('utf-8').strip()
-        #print(data)
         reading = []
         meow = ""
 
@@ -25,19 +26,18 @@ try:
                 meow += c
 
         if reading:
-            # Create a Float32MultiArray message
-            msg = Float32MultiArray()
-
-            # Create layout with one dimension (size of data list)
-            layout = MultiArrayLayout()
-            layout.dim.append(MultiArrayDimension(label="data", size=len(reading), stride=1))
-            msg.layout = layout
-
-            # Set the data field
-            msg.data = reading
-
+            pub_val = spectro_msg()
+            pub_val.brad = -1
+            pub.publish(pub_val)
             # Publish the message
-            pub.publish(msg)
+            for i in reading:
+                print(i)
+                pub_val.brad = i
+                pub.publish(pub_val)
+                rate.sleep()
+            else:
+                pub_val.brad = -1
+                pub.publish(pub_val)
 
         time.sleep(0.1)
 
