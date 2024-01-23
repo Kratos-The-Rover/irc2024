@@ -4,12 +4,10 @@ from sensor_msgs.msg import Joy
 from geometry_msgs.msg import Point
 
 p=Point()
-x=0
-y=0
+
 
 def callback(msg):
-    global p
-    global x,y
+   
     p.x=msg.axes[8]
     p.y=msg.axes[9]
 
@@ -19,6 +17,6 @@ def callback(msg):
 
 
 rospy.init_node("cam_gimble")
-rospy.Subscriber("/joy",Joy,callback)
+rospy.Subscriber("/joy0",Joy,callback)
 pub=rospy.Publisher("/cam_gimble",Point,queue_size=10)
 rospy.spin()
