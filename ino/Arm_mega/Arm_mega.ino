@@ -3,8 +3,8 @@
 #include <std_msgs/Int16MultiArray.h>
 #include<geometry_msgs/Point.h>
 #include <Servo.h>
-Servo servo1;
-Servo servo2;
+Servo s1;
+Servo s2;
 int x,y,z;
 // Servo servo3;
 //Servo servo4;
