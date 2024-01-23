@@ -1,0 +1,16 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/shiven/kratos_urc22/devel/lib/python3/dist-packages",
+        "/home/shiven/drone_ws/devel/lib/python3/dist-packages",
+        "/home/shiven/kratos2/devel/lib/python3/dist-packages",
+        "/home/shiven/catkin_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/shiven/kratos_urc22/devel/lib/python3/dist-packages",
+        "/home/shiven/drone_ws/devel/lib/python3/dist-packages",
+        "/home/shiven/kratos2/devel/lib/python3/dist-packages",
+        "/home/shiven/catkin_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
+}

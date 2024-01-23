@@ -13,4 +13,5 @@
     <node name="teleop" pkg="irc2024" type="teleop"/>
     <node name="base_bevel_stepper_v2" pkg="irc2024" type="base_bevel_stepper_v2.py" output="screen" />
     <node name="cam_la_v2" pkg="irc2024" type="cam_la_v2.py" output="screen"/>
+    <node name="cam_gimble" pkg="irc2024" type="cam_gimble.py" output="screen"/>
 </launch>
