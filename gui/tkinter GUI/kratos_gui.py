@@ -26,18 +26,33 @@ import os
 from  gui_stuff.msg import *
 
 # global coordinate varibles
+atmos_x = []
+temp_y = []
+humidity_y = []
+pressure_y = []
+
 sensor_x = []
 co2_y = []
 ch4_y = []
 co_y = []
 
-spectro_x = []
-brad_y = []
-chloro_y = []
+# spectro_time = datetime.now()
+
+spectro_pointer = 0
+spectro_x = [410, 435, 460, 485, 510, 535, 560, 585, 610, 645, 680, 705, 730, 760, 810, 860, 900, 940]
+brad_y = [0 for i in range(18)]
+chloro_y = [0 for i in range(18)]
 
 
 # backend functions
 # callback functions
+def atmos_callback(data):
+    global temp_y, humidity_y, pressure_y
+    temp_y.append(data.temp)
+    humidity_y.append(data.humidity)
+    pressure_y.append(data.pressure)
+    atmos_plot()
+    
 def sensor_callback(data):
     global co2_y, ch4_y, co_y
     co2_y.append(data.co2)
@@ -46,10 +61,19 @@ def sensor_callback(data):
     sensor_plot()
 
 def spectro_callback(data):
+    global spectro_pointer
     global brad_y, chloro_y
-    brad_y.append(data.brad)
-    chloro_y.append(data.chloro)
-    spectro_plot()
+    if data.brad !=-1:
+        # brad_y.append(data.brad)
+        # chloro_y.append(data.chloro)
+        print(spectro_pointer)
+        
+        brad_y[spectro_pointer] = data.brad
+        chloro_y[spectro_pointer] = data.chloro
+        spectro_pointer+= 1
+    else:
+        spectro_pointer = 0
+        spectro_plot()
 
 def ml_callback(data):
     ml_vid_obj = CvBridge()
@@ -73,6 +97,7 @@ def ros_thread():
     flag_pub = rospy.Publisher("/flag_topic", Int8, queue_size=1)
     
     # Subscribers
+    rospy.Subscriber("/atmosphere", atmos_msg, atmos_callback)
     rospy.Subscriber("/sensors", sensor_msg, sensor_callback)
     rospy.Subscriber("/spectrometer", spectro_msg, spectro_callback)
     rospy.Subscriber("/camera/image_raw", RosImage, ml_callback)
@@ -85,6 +110,43 @@ def close_func():
 
 
 # frontend functions
+
+def atmos_rec_plot():
+    ax5.clear()
+    ax6.clear()
+    ax7.clear()
+    
+    ax5.plot(atmos_x, temp_y, 'b^-')
+    ax5.set_title('Temperature plot')
+    ax5.set_xlabel('time')
+    ax5.set_ylabel('*C')
+
+    ax6.plot(atmos_x, humidity_y, 'r^-')
+    ax6.set_title('Humidity plot')
+    ax6.set_xlabel('time')
+    ax6.set_ylabel('%')
+
+    ax7.plot(atmos_x, pressure_y, 'g^-')
+    ax7.set_title('Pressure plot')
+    ax7.set_xlabel('time')
+    ax7.set_ylabel('hPa')
+
+def atmos_plot():
+    '''
+    Plots the received sensor readings
+    '''
+    global atmos_start
+    if len(atmos_x)==0:
+        atmos_start = datetime.now()
+        atmos_x.append(0)
+    else:
+        # atmos_x.append(round((datetime.now() - atmos_start).total_seconds()))
+        atmos_x.append(((datetime.now() - atmos_start).total_seconds()))
+    
+    atmos_rec_plot()
+    
+    canvas_atmos.draw_idle()
+
 def sensor_rec_plot():
     '''
     Clears previous plot and names the axes for sensors readings
@@ -128,14 +190,19 @@ def spectro_rec_plot():
     '''
     Clears previous plot and names the axes for spectrometer readings
     '''
+    # global spectro_time
+    # if (spectro_time-datetime.now()).total_seconds > 1:
+    #     brad_y.clear()
+    #     chloro_y.clear()
+    #     spectro_time = datetime.now()
+    
     ax4.clear()
     ax5.clear()
-    
+    # print(spectro_x, brad_y, chloro_y)
     ax4.plot(spectro_x, brad_y, 'b^-')
     ax4.set_title('Bradford assay')
     ax4.set_xlabel('wavelength')
     ax4.set_ylabel('absorbance')
-
     ax5.plot(spectro_x, chloro_y, 'r^-')
     ax5.set_title('Chlorophyll')
     ax5.set_xlabel('wavelength')
@@ -145,18 +212,24 @@ def spectro_plot():
     '''
     Plots the received spectrometer readings
     '''
-    global spectro_start
-    if len(spectro_x)==0:
-        spectro_start = datetime.now()
-        spectro_x.append(0)
-    else:
-        spectro_x.append((datetime.now() - spectro_start).total_seconds())
+    # global spectro_start
+    # if len(spectro_x)==0:
+    #     spectro_start = datetime.now()
+    #     spectro_x.append(0)
+    # else:
+    #     spectro_x.append((datetime.now() - spectro_start).total_seconds())
     
     spectro_rec_plot()
     
     canvas_spectro.draw_idle()
+    
+    # brad_y.clear()
+    # chloro_y.clear()
 
 # save buttons
+def atmos_save():
+    pass
+
 def sensor_save():
     file_path = filedialog.asksaveasfilename()
     if file_path:
@@ -181,16 +254,16 @@ def spectro_save():
     file_path = filedialog.asksaveasfilename()
     if file_path:
         with open(file_path, mode='w', newline='') as csv_file:
-            data = [brad_y, chloro_y]
-            
+            print(brad_y, len(brad_y))
+            print(chloro_y, len(chloro_y))
             writer = csv.writer(csv_file)
             writer.writerow(spectro_x)
             writer.writerow(brad_y)
             writer.writerow(chloro_y)
             
-    spectro_x.clear()
-    brad_y.clear()
-    chloro_y.clear()
+    # spectro_x.clear()
+    # brad_y.clear()
+    # chloro_y.clear()
     
     spectro_rec_plot()
     canvas_spectro.draw_idle()
@@ -198,6 +271,8 @@ def spectro_save():
     messagebox.showinfo(f"Save info", "Your file has been saved")
 
 # button click functions
+def atmos_button_click():
+    pass
 def sensor_button_click():
     flag_pub.publish(1)
 
@@ -287,19 +362,36 @@ main_note.add(note_controls, text="Controls tab")
 main_note.pack(expand=True, fill='both')
 
 # LD gui
-# sensor window
+atmos = tk.Frame(note_LD)
 sensors = tk.Frame(note_LD)
 spectro = tk.Frame(note_LD)
 ml_box = tk.Frame(note_LD)
 panorama = tk.Frame(note_LD)
 digi_micro = tk.Frame(note_LD)
 
+note_LD.add(atmos, text="Atmosphere")
 note_LD.add(sensors, text="Sensor readings")
 note_LD.add(spectro, text="Spectrometer")
 note_LD.add(ml_box, text="ML box")
 note_LD.add(panorama, text="Panorama")
 note_LD.add(digi_micro, text="Digital Microscope")
 
+# atmosphere window
+atmos_fig, (ax5, ax6, ax7) = plt.subplots(1, 3, figsize=(16, 4))
+
+atmos_rec_plot()
+
+canvas_atmos = FigureCanvasTkAgg(figure=atmos_fig, master=atmos)
+canvas_atmos.draw_idle()
+canvas_atmos.get_tk_widget().pack(padx=35, pady=35)
+
+atmos_button = tk.Button(master=atmos, text='Publish trigger', command=atmos_button_click)
+atmos_button.pack(padx=15, pady=25)
+
+save_atmos = tk.Button(master=atmos, text="Save values", command=atmos_save)
+save_atmos.pack(padx=15, pady=25)
+
+# sensor window
 sensor_fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(16, 4))
 
 sensor_rec_plot()

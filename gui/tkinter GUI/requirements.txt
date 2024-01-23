@@ -1,0 +1,6 @@
+rospy==1.16.0
+Pillow==7.0.0
+matplotlib==3.1.2
+opencv-python==4.8.0.74
+python-tk==8.6.12
+
