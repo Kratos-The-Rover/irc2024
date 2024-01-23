@@ -1,10 +1,12 @@
 #include <ros.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Int16MultiArray.h>
+#include<geometry_msgs/Point.h>
 #include <Servo.h>
 Servo servo1;
 Servo servo2;
-Servo servo3;
+int x,y,z;
+// Servo servo3;
 //Servo servo4;
 
 #define DIR4 6               //connections to be checked
@@ -19,10 +21,6 @@ Servo servo3;
 //#define servo4pin 4
 
 #define stepperenablepin 3
-
-//float servo11,servo22,servo33;
-//int servofun1=0;
-//int servofun2=0;
 
 ros::NodeHandle n;
 std_msgs::Int16MultiArray msg;
@@ -86,41 +84,26 @@ void messageCallback(const std_msgs::Int16MultiArray& receivedMsg)
     digitalWrite(stepperenablepin,HIGH);
   }
 }
-/* if(value_passed==3){
-    servo3.write(105);
-    delay(200);
-    servo3.write(90);
-  }
-  else if(value_passed==-3){
-    servo3.write(75);
-    delay(200);
-    servo3.write(90);
-  }
-  else{
-    servo3.write(90);
-  }
-  if(value_passed==4){
-    servo2.write(105);
-    delay(200);
-    servo2.write(90);
-  }
-  else if(value_passed==-4){
-    servo2.write(75);
-    delay(200);
-    servo2.write(90);
-  }
-  else{
-    servo2.write(90);
-  }
-//  
 
-//    vels.data=vel1;
-//  vels.angular.y=vel2;
-//  vels.linear.x=servofun1;
-//  vels.linear.y=servofun2;
-}*/
+void callback(const geometry_msgs::Point &msg){
+  x=msg.x;
+  y=msg.y;
+  if(x!=0){
+    s1.write(90+x*45);
+    delay(200);
+    s1.write(90);
+  }
+  if(y!=0){
+    s2.write(90+y*25);
+    delay(200);
+    s2.write(90);
+    
+    }
+}
+
 
 ros::Subscriber<std_msgs::Int16MultiArray> sub1("/control1", messageCallback); 
+ros::Subscriber<geometry_msgs::Point> sub2("cam_gimble",&callback);
 
 void setup(){
   pinMode(DIR4,OUTPUT);
@@ -129,19 +112,28 @@ void setup(){
   pinMode(PWM6,OUTPUT);
   pinMode(POT1,INPUT);
   digitalWrite(stepperenablepin, LOW);
-  servo3.attach(7);
-  servo2.attach(8);
+
+    s1.attach(servo3pin);
+  s2.attach(servo2pin);
+
+
+  // servo3.attach(7);
+  // servo2.attach(8);
 
   pinMode(3,OUTPUT);
   n.initNode();
   n.subscribe(sub1);
+    n.subscribe(sub2);
 //  n.advertise(pub1);
+  
+
 }
 
 void loop(){
   
 //  pub1.publish(&vels);
-
+  s1.write(90);
+  s2.write(90);
   n.spinOnce();
 }
 
