@@ -1,8 +1,9 @@
+#!/usr/bin/env python3
+
 import serial
 import time
 import rospy
 from gui_stuff.msg import spectro_msg
-from std_msgs.msg import Float32MultiArray, MultiArrayLayout, MultiArrayDimension
 
 # Define the serial port and baud rate
 ser = serial.Serial('/dev/ttyUSB0', 115200)  # Update the port accordingly
