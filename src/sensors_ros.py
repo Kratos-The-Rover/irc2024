@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rospy
 from std_msgs.msg import Int16MultiArray
 from irc2024.msg import sensor_msg
@@ -37,7 +39,7 @@ if __name__ == '__main__':
 
     # Create publishers for sensor_msg and atmos_msg messages
     sensor_pub = rospy.Publisher('sensor_topic', sensor_msg, queue_size=10)
-    atmos_pub = rospy.Publisher('atmos_topic', atmos_msg, queue_size=10)
+    atmos_pub = rospy.Publisher('atmos_topic', atmos_msg, queue_size=30)
 
     # Subscribe to ld_sensor_data topic
     rospy.Subscriber('ld_sensor_data', _Int16MultiArray, ld_sensor_callback)
