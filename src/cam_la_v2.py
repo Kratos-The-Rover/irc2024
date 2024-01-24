@@ -11,7 +11,7 @@ class JoystickControl:
         self.var_st = 0 # variable to enabel/disable stepper 
         self.msg = Int16MultiArray()
         
-        self.sub = rospy.Subscriber("/joy", Joy, self.callback)
+        self.sub = rospy.Subscriber("/joy1", Joy, self.callback)
         self.pub = rospy.Publisher("/control1", Int16MultiArray, queue_size=1)
 
     def callback(self, data):
