@@ -66,7 +66,7 @@ class JoystickControl:
           self.msg.data = [self.var_base, self.vel_base, self.var_bev, self.vel_bev, self.var_st]
           self.pub.publish(self.msg)
 
-# rospy.init_node("joy_control", anonymous=True)
+#rospy.init_node("joy_control", anonymous=True)
 pub = rospy.Publisher("/control2", Int16MultiArray, queue_size=1)
 
 if __name__ == '__main__':
