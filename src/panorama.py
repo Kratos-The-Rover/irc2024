@@ -42,7 +42,7 @@ stitcher = cv2.Stitcher.create()
 if (status == cv2.Stitcher_OK):
     print('Panorama Generated')
     cv2.imwrite("/home/{user}/Desktop/panorama_results/panaroma_done.jpg", result)
-    cv2.imshow('Images',result)
+#    cv2.imshow('Images',result)
     cv2.waitKey()
 else:
     print('Not successful')
