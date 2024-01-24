@@ -15,7 +15,7 @@ class JoystickControl:
           self.msg = Int16MultiArray()
           self.stepper_status = 2  ## 0 / 2 for disable, 1 for enable
         
-          self.sub = rospy.Subscriber("/joy", Joy, self.callback)
+          self.sub = rospy.Subscriber("/joy1", Joy, self.callback)
           self.pub = rospy.Publisher("/ld_mega", Int16MultiArray, queue_size=1)
         
      def callback(self, data):
@@ -53,10 +53,9 @@ class JoystickControl:
           self.msg.data = [self.pump2,self.pump3,self.auger_spin, self.stepper_status]
           self.pub.publish(self.msg)
 
-rospy.init_node("joy_control_mega", anonymous=True)
 pub = rospy.Publisher("/mega", Int16MultiArray, queue_size=1)
 rate = rospy.Rate(10)
 if __name__ == '__main__':
-    rospy.init_node("joy_control_mega", anonymous=True)
+    rospy.init_node("LD_setup_mega", anonymous=True)
     joystick_control = JoystickControl()
     rospy.spin()
