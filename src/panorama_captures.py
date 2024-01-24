@@ -39,7 +39,7 @@ def update_feed():
     global image
     while(num==1):
         ret, image = cam.read()
-        cv2.imshow("feed",image)
+        # cv2.imshow("feed",image)
         
 
 def capture_image():
